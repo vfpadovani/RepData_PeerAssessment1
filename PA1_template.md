@@ -81,14 +81,16 @@ h1
 ![](PA1_template_files/figure-html/histogram1-1.png)<!-- -->
 
 ```r
-Smm <-
+sumsteps <-
 activity%>%
-        select(- interval) %>%
-        summarise(stepsMean = round(mean(steps, na.rm =T), 2),
-                  stepsMedian = median(steps, na.rm =T))
+        group_by(date) %>%
+        summarise(steps = sum(steps, na.rm = T))
+
+smean <- round(mean(sumsteps$steps), 2)
+smedian <- median(sumsteps$steps)
 ```
 
-Activity's Steps mean and median are the following **37.38, 0**, respectively. 
+Activity's daily Steps mean and median are the following **9354.23** and **10395**, respectively. 
 
 ## What is the average daily activity pattern?
 
@@ -212,14 +214,16 @@ h1 | h2
 ![](PA1_template_files/figure-html/HistComparision-1.png)<!-- -->
 
 ```r
-Smm2 <-
-NoNA.actv %>%
-        select(- interval) %>%
-        summarise(stepsMean = round(mean(steps, na.rm =T), 2),
-                  stepsMedian = median(steps, na.rm =T))
+sumsteps2 <-
+NoNA.actv%>%
+        group_by(date) %>%
+        summarise(steps = sum(steps, na.rm = T))
+
+smean2 <- format(mean(as.numeric(sumsteps2$steps)), scientific = F)
+smedian2 <- format(median(as.numeric(sumsteps2$steps)), scientific = F)
 ```
 
-Activity's Steps mean and median (after imputing missing values) are the following **37.38, 0**, respectively. 
+Activity's daily Steps mean and median (after imputing missing values) are the following **10766.19** and **10766.19**, respectively. 
 
 ## Are there differences in activity patterns between weekdays and weekends?
 

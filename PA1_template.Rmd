@@ -43,21 +43,23 @@ activity %>%
 h1
 ```
 ``` {r SMeanMedian1}
-Smm <-
+sumsteps <-
 activity%>%
-        select(- interval) %>%
-        summarise(stepsMean = round(mean(steps, na.rm =T), 2),
-                  stepsMedian = median(steps, na.rm =T))
+        group_by(date) %>%
+        summarise(steps = sum(steps, na.rm = T))
+
+smean <- round(mean(sumsteps$steps), 2)
+smedian <- median(sumsteps$steps)
 ```
 
-Activity's Steps mean and median are the following **`r Smm`**, respectively. 
+Activity's daily Steps mean and median are the following **`r smean`** and **`r smedian`**, respectively. 
 
 ## What is the average daily activity pattern?
 
 ``` {r gganimate}
 library(gganimate)
 ```
-``` {r TimeSeries1}
+``` {r TimeSeries1, cache = T}
 activity %>%
         group_by(interval) %>%
         summarise(steps = mean(steps, na.rm =T)) %>%
@@ -125,14 +127,16 @@ library(patchwork)
 h1 | h2
 ```
 ``` {r SMeanMedian2}
-Smm2 <-
-NoNA.actv %>%
-        select(- interval) %>%
-        summarise(stepsMean = round(mean(steps, na.rm =T), 2),
-                  stepsMedian = median(steps, na.rm =T))
+sumsteps2 <-
+NoNA.actv%>%
+        group_by(date) %>%
+        summarise(steps = sum(steps, na.rm = T))
+
+smean2 <- format(mean(sumsteps2$steps), scientific = F)
+smedian2 <- format(median(sumsteps2$steps), scientific = F)
 ```
 
-Activity's Steps mean and median (after imputing missing values) are the following **`r Smm2`**, respectively. 
+Activity's daily Steps mean and median (after imputing missing values) are the following **`r smean2`** and **`r smedian2`**, respectively. 
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
